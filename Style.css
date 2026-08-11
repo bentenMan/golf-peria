@@ -1,22 +1,475 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: sans-serif;
-  margin: 20px;
-}
-.section {
-  border: 1px solid #ccc;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    "Yu Gothic",
+    "Meiryo",
+    sans-serif;
+
+  margin: 0;
   padding: 15px;
+
+  background: #f5f7f8;
+  color: #222;
+}
+
+h2 {
+  margin-top: 5px;
   margin-bottom: 20px;
+  color: #176b35;
 }
+
+h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+h4 {
+  margin-bottom: 10px;
+}
+
+
+/* =========================
+   セクション
+========================= */
+
+.section {
+  background: white;
+
+  border: 1px solid #ddd;
+  border-radius: 10px;
+
+  padding: 15px;
+  margin-bottom: 18px;
+
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+
+/* =========================
+   ボタン
+========================= */
+
+button,
+label.camera-btn,
+label.file-btn {
+  border: none;
+  border-radius: 8px;
+
+  padding: 12px 16px;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  display: inline-block;
+
+  text-align: center;
+
+  touch-action: manipulation;
+}
+
+.primary-btn {
+  background: #1976d2;
+  color: white;
+}
+
+.secondary-btn {
+  background: #607d8b;
+  color: white;
+}
+
+.calculate-btn {
+  background: #16803c;
+  color: white;
+
+  width: 100%;
+
+  font-size: 18px;
+
+  padding: 15px;
+}
+
+.ocr-btn {
+  background: #e67e22;
+  color: white;
+
+  width: 100%;
+
+  margin-top: 15px;
+}
+
+.ocr-btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   画像ボタン
+========================= */
+
+.image-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.camera-btn {
+  background: #e74c3c;
+  color: white;
+
+  flex: 1;
+}
+
+.file-btn {
+  background: #3498db;
+  color: white;
+
+  flex: 1;
+}
+
+.image-buttons input {
+  display: none;
+}
+
+
+/* =========================
+   隠しホール
+========================= */
+
+.hidden-result {
+  font-size: 17px;
+  font-weight: bold;
+  color: #176b35;
+}
+
+.par-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.par-item {
+  display: flex;
+  align-items: center;
+
+  border: 1px solid #ddd;
+  border-radius: 6px;
+
+  padding: 6px;
+}
+
+.par-item input {
+  width: 55px;
+
+  margin-left: 5px;
+
+  font-size: 18px;
+  padding: 5px;
+
+  text-align: center;
+}
+
+
+/* =========================
+   ヒント
+========================= */
+
+.hint {
+  color: #666;
+  font-size: 14px;
+}
+
+
+/* =========================
+   画像プレビュー
+========================= */
+
+.preview-area {
+  margin-top: 15px;
+}
+
+.preview-area img {
+  width: 100%;
+  max-height: 500px;
+
+  object-fit: contain;
+
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  background: #eee;
+}
+
+
+/* =========================
+   OCR進捗
+========================= */
+
+.ocr-progress {
+  margin-top: 15px;
+
+  padding: 12px;
+
+  background: #f1f8ff;
+
+  border-radius: 8px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 15px;
+
+  background: #ddd;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+#progressBar {
+  width: 0%;
+  height: 100%;
+
+  background: #1976d2;
+
+  transition: width 0.2s;
+}
+
+
+/* =========================
+   プレーヤー
+========================= */
+
 .player {
-  border: 1px solid #aaa;
-  padding: 10px;
-  margin: 10px 0;
+  border: 1px solid #bbb;
+
+  border-radius: 8px;
+
+  padding: 12px;
+
+  margin: 12px 0;
+
+  background: #fafafa;
 }
+
+.player-title {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+.player-name {
+  width: 100%;
+
+  font-size: 17px;
+
+  padding: 8px;
+
+  border: 1px solid #bbb;
+
+  border-radius: 5px;
+
+  margin-bottom: 10px;
+}
+
+.score-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(9, minmax(55px, 1fr));
+
+  gap: 5px;
+
+  overflow-x: auto;
+}
+
+.score-cell {
+  text-align: center;
+}
+
+.score-cell label {
+  display: block;
+
+  font-size: 12px;
+
+  color: #555;
+
+  margin-bottom: 3px;
+}
+
+.score-input {
+  width: 100%;
+
+  min-width: 50px;
+
+  padding: 8px 3px;
+
+  text-align: center;
+
+  font-size: 17px;
+
+  border: 1px solid #aaa;
+
+  border-radius: 5px;
+}
+
+.score-input:focus {
+  border-color: #1976d2;
+  outline: none;
+
+  background: #eaf4ff;
+}
+
+.front-nine,
+.back-nine {
+  display: grid;
+
+  grid-template-columns:
+    repeat(9, minmax(55px, 1fr));
+
+  gap: 5px;
+
+  margin-bottom: 8px;
+}
+
+.half-title {
+  grid-column: 1 / -1;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  color: #176b35;
+}
+
+
+/* =========================
+   OCR結果
+========================= */
+
+.raw-area {
+  margin-top: 15px;
+}
+
+.raw-area pre {
+  white-space: pre-wrap;
+
+  background: #222;
+  color: #0f0;
+
+  padding: 10px;
+
+  border-radius: 5px;
+
+  max-height: 250px;
+
+  overflow: auto;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   テーブル
+========================= */
+
+.table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+
+  margin-top: 15px;
+}
+
 table {
   border-collapse: collapse;
+
   width: 100%;
+
+  min-width: 500px;
 }
-table, th, td {
+
+table,
+th,
+td {
   border: 1px solid #333;
-  padding: 5px;
+}
+
+th {
+  background: #176b35;
+  color: white;
+}
+
+th,
+td {
+  padding: 8px;
+
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background: #f5f5f5;
+}
+
+
+/* =========================
+   表示切替
+========================= */
+
+.hidden {
+  display: none !important;
+}
+
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 600px) {
+
+  body {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 21px;
+  }
+
+  h3 {
+    font-size: 17px;
+  }
+
+  button,
+  label.camera-btn,
+  label.file-btn {
+    width: 100%;
+
+    margin-bottom: 5px;
+  }
+
+  .image-buttons {
+    display: block;
+  }
+
+  .score-grid,
+  .front-nine,
+  .back-nine {
+    grid-template-columns:
+      repeat(9, 55px);
+  }
+
+  .player {
+    overflow-x: auto;
+  }
+
 }

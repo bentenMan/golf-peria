@@ -2,36 +2,179 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>ゴルフハンディ計算（ローカルペリア方式）</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
+
+<title>ゴルフハンディ計算（ローカルペリア）</title>
+
 <link rel="stylesheet" href="style.css">
+
+<!-- Tesseract.js -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/tesseract.min.js"></script>
 </head>
+
 <body>
 
-<h2>ゴルフハンディ計算（ローカルペリア）</h2>
+<h2>⛳ ゴルフハンディ計算（ローカルペリア）</h2>
 
+<!-- ========================= -->
+<!-- ① 隠しホール -->
+<!-- ========================= -->
 <div class="section">
   <h3>① 隠しホール設定（9ホール）</h3>
-  <button onclick="generateHidden()">隠しホールをランダム生成</button>
-  <p id="hiddenResult"></p>
+
+  <button class="primary-btn" onclick="generateHidden()">
+    隠しホールをランダム生成
+  </button>
+
+  <p id="hiddenResult" class="hidden-result"></p>
 </div>
 
+
+<!-- ========================= -->
+<!-- ② PAR -->
+<!-- ========================= -->
 <div class="section">
   <h3>② 隠しホールの PAR 入力</h3>
-  <div id="parInputs"></div>
+
+  <div id="parInputs" class="par-container">
+    <p class="hint">
+      先に「隠しホールをランダム生成」を押してください。
+    </p>
+  </div>
 </div>
 
+
+<!-- ========================= -->
+<!-- ③ スコアカード画像 -->
+<!-- ========================= -->
 <div class="section">
-  <h3>③ プレーヤー入力（最大10名）</h3>
-  <button onclick="addPlayer()">プレーヤー追加</button>
+
+  <h3>③ スコアカード画像から自動入力</h3>
+
+  <p class="hint">
+    スマートフォンでスコアカードを撮影するか、
+    保存済みの画像を選択してください。
+  </p>
+
+  <div class="image-buttons">
+
+    <!-- カメラ -->
+    <label class="camera-btn">
+      📷 カメラで撮影
+      <input
+        id="cameraInput"
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onchange="handleImage(this.files[0])">
+    </label>
+
+    <!-- ファイル -->
+    <label class="file-btn">
+      🖼️ 写真を選択
+      <input
+        id="fileInput"
+        type="file"
+        accept="image/*"
+        onchange="handleImage(this.files[0])">
+    </label>
+
+  </div>
+
+  <!-- プレビュー -->
+  <div id="imagePreviewArea" class="preview-area hidden">
+    <h4>読み込んだ画像</h4>
+
+    <img id="imagePreview" alt="スコアカード画像">
+
+    <button
+      id="ocrButton"
+      class="ocr-btn"
+      onclick="startOCR()"
+      disabled>
+      🔍 スコアを読み取る
+    </button>
+  </div>
+
+  <!-- OCR進捗 -->
+  <div id="ocrProgressArea" class="ocr-progress hidden">
+
+    <p id="ocrStatus">
+      OCR準備中...
+    </p>
+
+    <div class="progress-bar">
+      <div id="progressBar"></div>
+    </div>
+
+  </div>
+
+  <!-- OCR結果 -->
+  <div id="ocrRawArea" class="raw-area hidden">
+
+    <details>
+      <summary>OCRの読み取り結果を見る</summary>
+
+      <pre id="ocrRawText"></pre>
+
+    </details>
+
+  </div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- ④ プレーヤー -->
+<!-- ========================= -->
+<div class="section">
+
+  <h3>④ プレーヤー入力・OCR結果確認（最大10名）</h3>
+
+  <div class="player-buttons">
+
+    <button
+      class="secondary-btn"
+      onclick="addPlayer()">
+      ＋ プレーヤー追加
+    </button>
+
+    <button
+      class="secondary-btn"
+      onclick="clearPlayers()">
+      🗑 全員クリア
+    </button>
+
+  </div>
+
   <div id="players"></div>
+
 </div>
 
+
+<!-- ========================= -->
+<!-- ⑤ 計算 -->
+<!-- ========================= -->
 <div class="section">
-  <h3>④ ハンディ計算</h3>
-  <button onclick="calculate()">計算する</button>
-  <table id="resultTable"></table>
+
+  <h3>⑤ ハンディ計算</h3>
+
+  <button
+    class="calculate-btn"
+    onclick="calculate()">
+    🏆 計算する
+  </button>
+
+  <div class="table-wrapper">
+    <table id="resultTable"></table>
+  </div>
+
 </div>
+
 
 <script src="main.js"></script>
+
 </body>
 </html>
