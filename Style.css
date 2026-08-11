@@ -1,0 +1,22 @@
+body {
+  font-family: sans-serif;
+  margin: 20px;
+}
+.section {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+.player {
+  border: 1px solid #aaa;
+  padding: 10px;
+  margin: 10px 0;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+table, th, td {
+  border: 1px solid #333;
+  padding: 5px;
+}
