@@ -385,10 +385,16 @@ async function startOCR() {
 
     await ocrWorker.setParameters({
 
-      preserve_interword_spaces: "1",
+//     preserve_interword_spaces: "1",
 
-      tessedit_pageseg_mode:
-        Tesseract.PSM.SPARSE_TEXT
+//        tessedit_pageseg_mode:
+//          Tesseract.PSM.SPARSE_TEXT
+//
+        
+	  tessedit_pageseg_mode: Tesseract.PSM.SINGLE_BLOCK,
+	  tessedit_char_whitelist: "0123456789",
+	  preserve_interword_spaces: "1"
+          
     });
 
 
@@ -401,10 +407,10 @@ async function startOCR() {
       文字だけでなく、
       x / y座標も取得します。
     */
-
+	const processed = preprocessImage(document.getElementById("imagePreview"));
     const result =
       await ocrWorker.recognize(
-        selectedImage,
+        processed,
         {},
         {
           blocks: true,
@@ -515,6 +521,14 @@ async function startOCR() {
   }
 }
 
+function preprocessImage(imgElement) {
+  let src = cv.imread(imgElement);
+  cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY);
+  cv.threshold(src, src, 150, 255, cv.THRESH_BINARY);
+  cv.medianBlur(src, src, 3);
+  cv.imwrite("processed.png", src);
+  return "processed.png";
+}
 
 /* =========================================================
    OCR結果からスコアカードを解析
@@ -1054,7 +1068,9 @@ function groupByY(words) {
 
   const groups = [];
 
-  const tolerance = 15;
+  // 行の高さを推定（平均値）
+  const avgHeight = average(sorted.map(w => w.height));
+  const tolerance = Math.max(20, avgHeight * 0.6);  // 動的に調整
 
 
   sorted.forEach(word => {
